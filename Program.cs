@@ -25,6 +25,16 @@ namespace Collection_Classes
                 Player player = new Player(name, score);
                 playerList.Add(player);
             }
+            Console.WriteLine("Sorter efter navn eller score (n/s)?");
+            var userinput = Console.ReadKey(true);
+            if(userinput.Key == ConsoleKey.N)
+            {
+            playerList.Sort(new CompareName());
+            }else if(userinput.Key == ConsoleKey.S)
+            {
+            playerList.Sort((x, y) => x.Score - y.Score);
+            }
+
             foreach (Player player in playerList)
             {
                 Console.WriteLine($"{player.Name}: {player.Score}");
@@ -32,6 +42,12 @@ namespace Collection_Classes
 
 
         }
+
+        public static int CompareIt(Player p1, Player p2)
+        {
+            return p1.Score - p2.Score;
+        }
+
         static void Namelist()
         {
             List<string> namelist;
@@ -55,7 +71,7 @@ namespace Collection_Classes
             }
         }
     }
-    class Player
+    class Player : IComparable
     {
         string name;
         int score;
@@ -85,5 +101,18 @@ namespace Collection_Classes
                 return name;
             }
         }
+
+        public int CompareTo(object obj)
+        {
+            return Score.CompareTo((obj as Player).Score);
+        }
+    }
+    class CompareName : IComparer<Player>
+    {
+        public int Compare(Player x, Player y)
+        {
+            return x.Name.CompareTo(y.Name);
+        }
+       
     }
 }
